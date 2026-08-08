@@ -1,11 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { createClient, type Session } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
