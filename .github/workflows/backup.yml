@@ -34,3 +34,10 @@ jobs:
           name: tuxedo-backup-${{ github.run_id }}
           path: backups/
           retention-days: 90
+          
+      - name: Verify dump is restorable
+        run: |
+          echo "=== TOC (should list your tables) ==="
+          /usr/lib/postgresql/17/bin/pg_restore --list backups/tuxedo-*.dump | tee toc.txt
+          grep -qE 'TABLE (DATA )?public\.(profiles|coders|funds|cases|code_changes)' toc.txt \
+            || { echo "Dump missing expected tables"; exit 1; }
