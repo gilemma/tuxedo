@@ -1,0 +1,53 @@
+# ─── Node / package managers ─────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ─── Build output ────────────────────────────────────────
+dist/
+dist-ssr/
+build/
+.vite/
+*.tsbuildinfo
+
+# ─── Test / coverage / Playwright ────────────────────────
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ─── Environment & secrets ───────────────────────────────
+# .env is committed only via the explicit example file below.
+.env
+.env.*
+!.env.example
+secrets.md
+credentials.md
+*.key
+*.pem
+
+# ─── Supabase local dev ──────────────────────────────────
+# The CLI stores local branch/session state and generated types here.
+supabase/.branches/
+supabase/.temp/
+# If you generate types locally, keep the generated file out of git
+# and regenerate via `supabase gen types typescript ...` on demand.
+# (Comment out the next line if you decide to commit generated types.)
+src/supabase/types.generated.ts
+
+# ─── Editor / OS ─────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── Logs ────────────────────────────────────────────────
+*.log
+logs/
