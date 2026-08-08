@@ -4,7 +4,7 @@ import { supabase } from './supabase/client';
 import { useAuth } from './shared/hooks/useAuth';
 import { Button } from './shared/ui/Button';
 import { CodersEditor } from './modules/admin';
-import { NewCase } from './modules/intake';
+import { NewCase, EditCase, CaseDetail } from './modules/intake';
 
 export default function App() {
   const { session, loading } = useAuth();
@@ -18,6 +18,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cases/new" element={<NewCase />} />
+          <Route path="/cases/:id" element={<CaseDetail />} />
+          <Route path="/cases/:id/edit" element={<EditCase />} />
           <Route path="/admin/coders" element={<CodersEditor />} />
         </Routes>
       </Shell>

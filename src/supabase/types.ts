@@ -66,3 +66,10 @@ export type CaseInsert = {
   diagnoses_pre?: CodeEntry[];
   procedures_pre?: CodeEntry[];
 };
+
+export type CaseUpdate = Partial<CaseInsert>;
+
+export type CaseWithRefs = Case & {
+  coder: { name: string } | null;
+  fund: { name: string } | null;
+};
