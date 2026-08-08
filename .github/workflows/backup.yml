@@ -1,0 +1,29 @@
+name: Daily DB backup
+
+on:
+  schedule:
+    - cron: '17 3 * * *'     # 03:17 UTC daily
+  workflow_dispatch:          # manual trigger for testing
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump public schema
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p backups
+          TS=$(date -u +%Y%m%dT%H%M%SZ)
+          pg_dump "$SUPABASE_DB_URL" \
+            --schema=public \
+            --no-owner --no-privileges \
+            --format=custom \
+            --file="backups/tuxedo-$TS.dump"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuxedo-backup-${{ github.run_id }}
+          path: backups/
+          retention-days: 90
