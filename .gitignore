@@ -39,10 +39,17 @@ supabase/.temp/
 src/supabase/types.generated.ts
 
 # ─── Editor / OS ─────────────────────────────────────────
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
+*.sw?
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.local
 .DS_Store
 Thumbs.db
 ehthumbs.db
