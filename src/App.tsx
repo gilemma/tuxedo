@@ -1,73 +1,109 @@
-import { useState, useEffect, type FormEvent } from 'react';
-import { createClient, type Session } from '@supabase/supabase-js';
-
-const url = import.meta.env.VITE_SUPABASE_URL;
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-if (!url || !key) throw new Error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY');
-const supabase = createClient(url, key);
+import { useState, type FormEvent } from 'react';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { supabase } from './supabase/client';
+import { useAuth } from './shared/hooks/useAuth';
+import { Button } from './shared/ui/Button';
+import { CodersEditor } from './modules/admin';
+import { NewCase } from './modules/intake';
 
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [displayName, setDisplayName] = useState<string | null>(null);
+  const { session, loading } = useAuth();
+
+  if (loading) return <main style={{ padding: '2rem' }}>Loading…</main>;
+  if (!session) return <SignIn />;
+
+  return (
+    <BrowserRouter>
+      <Shell>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cases/new" element={<NewCase />} />
+          <Route path="/admin/coders" element={<CodersEditor />} />
+        </Routes>
+      </Shell>
+    </BrowserRouter>
+  );
+}
+
+function Shell({ children }: { children: React.ReactNode }) {
+  const { displayName } = useAuth();
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <header
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '10px 20px',
+          borderBottom: '1px solid var(--rule)',
+          background: 'var(--paper-2)',
+        }}
+      >
+        <nav style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <Link to="/" style={{ color: 'var(--ink)', textDecoration: 'none', fontFamily: 'var(--font-display)' }}>
+            Tuxedo
+          </Link>
+          <Link to="/cases/new" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
+            New case
+          </Link>
+          <Link to="/admin/coders" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Coders
+          </Link>
+        </nav>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span style={{ color: 'var(--ink-3)', fontSize: '0.9rem' }}>{displayName ?? '…'}</span>
+          <Button variant="ghost" onClick={() => supabase.auth.signOut()}>
+            Sign out
+          </Button>
+        </div>
+      </header>
+      <main>{children}</main>
+    </div>
+  );
+}
+
+function Home() {
+  const { displayName } = useAuth();
+  return (
+    <section style={{ padding: '2rem', maxWidth: 560, margin: '0 auto' }}>
+      <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>
+        Hello, {displayName ?? '…'}
+      </h1>
+      <p style={{ color: 'var(--ink-2)' }}>
+        Dashboard scaffolding lands later in Phase 2. For now, open a{' '}
+        <Link to="/cases/new" style={{ color: 'var(--ink-blue)' }}>new case</Link> or manage{' '}
+        <Link to="/admin/coders" style={{ color: 'var(--ink-blue)' }}>coders</Link>.
+      </p>
+    </section>
+  );
+}
+
+function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // 1. Listen for auth state changes
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // 2. Fetch display_name when user is authenticated (id = auth.uid())
-  useEffect(() => {
-    if (!session?.user) return;
-    const userId = session.user.id;
-    supabase.from('profiles').select('display_name').eq('id', userId).single()
-      .then(({ data, error }) => {
-        if (error) console.error('Error fetching profile:', error);
-        else if (data) setDisplayName(data.display_name);
-      });
-  }, [session]);
-
-  // 3. Handle email/password sign-in
-  const handleSignIn = async (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setBusy(true);
     setError(null);
-
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setError(error.message);
-    setLoading(false);
+    setBusy(false);
   };
-  // 4. Render welcome page post-sign-in
-  if (session) {
-    return (
-      <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-        <h1>Hello, {displayName ?? 'Loading...'}</h1>
-        <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
-      </main>
-    );
-  }
 
-  // 5. Render sign-in form
   return (
-    <main style={{ padding: '2rem', fontFamily: 'sans-serif', maxWidth: '320px' }}>
-      <h2>Sign In</h2>
-      <form onSubmit={handleSignIn} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <main style={{ padding: '2rem', fontFamily: 'var(--font-body)', maxWidth: 320, margin: '0 auto' }}>
+      <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>Sign in</h2>
+      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          style={{ padding: '6px 8px', border: '1px solid var(--rule)', background: 'var(--paper-inset)', color: 'var(--ink)' }}
         />
         <input
           type="password"
@@ -75,12 +111,13 @@ export default function App() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          style={{ padding: '6px 8px', border: '1px solid var(--rule)', background: 'var(--paper-inset)', color: 'var(--ink)' }}
         />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign In'}
-        </button>
+        <Button type="submit" disabled={busy}>
+          {busy ? 'Signing in…' : 'Sign in'}
+        </Button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--audit-red)' }}>{error}</p>}
     </main>
   );
 }
