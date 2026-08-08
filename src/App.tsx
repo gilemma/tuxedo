@@ -5,6 +5,7 @@ import { useAuth } from './shared/hooks/useAuth';
 import { Button } from './shared/ui/Button';
 import { CodersEditor } from './modules/admin';
 import { NewCase, EditCase, CaseDetail } from './modules/intake';
+import { CaseLedger, Dashboard } from './modules/ledger';
 
 export default function App() {
   const { session, loading } = useAuth();
@@ -16,7 +17,8 @@ export default function App() {
     <BrowserRouter>
       <Shell>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/ledger" element={<CaseLedger />} />
           <Route path="/cases/new" element={<NewCase />} />
           <Route path="/cases/:id" element={<CaseDetail />} />
           <Route path="/cases/:id/edit" element={<EditCase />} />
@@ -45,6 +47,9 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link to="/" style={{ color: 'var(--ink)', textDecoration: 'none', fontFamily: 'var(--font-display)' }}>
             Tuxedo
           </Link>
+          <Link to="/ledger" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Ledger
+          </Link>
           <Link to="/cases/new" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
             New case
           </Link>
@@ -61,22 +66,6 @@ function Shell({ children }: { children: React.ReactNode }) {
       </header>
       <main>{children}</main>
     </div>
-  );
-}
-
-function Home() {
-  const { displayName } = useAuth();
-  return (
-    <section style={{ padding: '2rem', maxWidth: 560, margin: '0 auto' }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>
-        Hello, {displayName ?? '…'}
-      </h1>
-      <p style={{ color: 'var(--ink-2)' }}>
-        Dashboard scaffolding lands later in Phase 2. For now, open a{' '}
-        <Link to="/cases/new" style={{ color: 'var(--ink-blue)' }}>new case</Link> or manage{' '}
-        <Link to="/admin/coders" style={{ color: 'var(--ink-blue)' }}>coders</Link>.
-      </p>
-    </section>
   );
 }
 
