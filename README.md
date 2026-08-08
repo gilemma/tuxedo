@@ -28,7 +28,7 @@ tests/e2e/            Playwright smoke
 scripts/              one-off maintenance scripts (e.g. pg_dump backup)
 ```
 
-Module boundaries: each module exposes a small `index.ts` public API. Cross-module reaches go through those only; internals stay private (to be enforced via ESLint `no-restricted-imports` once scaffolded).
+Module boundaries: each module exposes a small `index.ts` public API. Cross-module reaches go through those only; internals stay private, enforced via oxlint `no-restricted-imports` in `.oxlintrc.json`.
 
 ## First-week checklist
 

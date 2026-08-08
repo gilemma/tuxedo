@@ -3,6 +3,14 @@
   "plugins": ["react", "typescript", "oxc"],
   "rules": {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+    "no-restricted-imports": ["error", {
+      "patterns": [
+        {
+          "group": ["../../*/model/*", "../../*/model/**", "../../*/views/*", "../../*/views/**"],
+          "message": "Cross-module imports must go through the target module's public index.ts, not reach into model/ or views/ directly."
+        }
+      ]
+    }]
   }
 }
