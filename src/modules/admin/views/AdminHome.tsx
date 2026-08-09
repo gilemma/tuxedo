@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useCoders } from '../model/coders';
 import { useFunds } from '../model/funds';
 import { useTemplates } from '../model/templates';
+import { SkinPicker } from '../../../presentation/SkinPicker';
 
 export function AdminHome() {
   const coders = useCoders();
@@ -67,6 +68,10 @@ export function AdminHome() {
         <Row label="Contracts" to={undefined} placeholder="Later phase" />
         <Row label="Saved analyses" to={undefined} placeholder="Later phase" />
       </ul>
+
+      <div style={{ borderTop: '1px solid var(--rule)' }}>
+        <SkinPicker />
+      </div>
     </section>
   );
 }

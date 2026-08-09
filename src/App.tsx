@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { supabase } from './supabase/client';
 import { useAuth } from './shared/hooks/useAuth';
 import { Button } from './shared/ui/Button';
+import { Shell } from './presentation/Shell';
 import { AdminHome, CodersEditor, TemplatesEditor } from './modules/admin';
 import { NewCase, EditCase, CaseDetail } from './modules/intake';
 import { CaseLedger, Dashboard } from './modules/ledger';
@@ -30,46 +31,6 @@ export default function App() {
         </Routes>
       </Shell>
     </BrowserRouter>
-  );
-}
-
-function Shell({ children }: { children: React.ReactNode }) {
-  const { displayName } = useAuth();
-  return (
-    <div style={{ minHeight: '100vh' }}>
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '10px 20px',
-          borderBottom: '1px solid var(--rule)',
-          background: 'var(--paper-2)',
-        }}
-      >
-        <nav style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-          <Link to="/" style={{ color: 'var(--ink)', textDecoration: 'none', fontFamily: 'var(--font-display)' }}>
-            Tuxedo
-          </Link>
-          <Link to="/ledger" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Ledger
-          </Link>
-          <Link to="/cases/new" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
-            New case
-          </Link>
-          <Link to="/admin" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Admin
-          </Link>
-        </nav>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <span style={{ color: 'var(--ink-3)', fontSize: '0.9rem' }}>{displayName ?? '…'}</span>
-          <Button variant="ghost" onClick={() => supabase.auth.signOut()}>
-            Sign out
-          </Button>
-        </div>
-      </header>
-      <main>{children}</main>
-    </div>
   );
 }
 

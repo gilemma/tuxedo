@@ -1,0 +1,50 @@
+:root[data-skin="ledger"] {
+    --paper: #F4EFE4;
+    --paper-2: #EBE5D6;
+    --paper-inset: #FBF8F0;
+    --ink: #1A1D28;
+    --ink-2: #454A5A;
+    --ink-3: #7C7A70;
+    --rule: #D8CFB9;
+    --rule-2: #C1B69C;
+    --tab: #B08248;
+    --tab-2: #8E6535;
+    --audit-red: #A63A2E;
+    --ledger-green: #3F6B4E;
+    --ink-blue: #2F547A;
+    --highlight: #F5E7C7;
+    --shadow-sm: 0 1px 0 rgba(120, 90, 40, .05);
+    --shadow-md: 0 1px 2px rgba(35, 25, 10, .06), 0 6px 18px rgba(35, 25, 10, .05);
+
+    --shell-bg: var(--paper-2);
+    --shell-fg: var(--ink);
+    --shell-fg-muted: var(--ink-3);
+    --shell-accent: var(--tab);
+    --shell-rule: var(--rule);
+    --shell-sheet-bg: var(--paper-inset);
+
+    --font-display: 'Iowan Old Style', 'Sitka Text', Cambria, 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', Consolas, 'SF Mono', Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root[data-skin="ledger"]:not([data-mode="light"]) {
+        --paper: #171A22;
+        --paper-2: #1F222C;
+        --paper-inset: #10131A;
+        --ink: #E6E1D0;
+        --ink-2: #B4AF9F;
+        --ink-3: #77726A;
+        --rule: #2A2D37;
+        --rule-2: #3A3E48;
+        --tab: #CA9660;
+        --tab-2: #A67A45;
+        --audit-red: #D46456;
+        --ledger-green: #83AC90;
+        --ink-blue: #7BA0C4;
+        --highlight: #3A331F;
+        --shadow-sm: 0 1px 0 rgba(0, 0, 0, .3);
+        --shadow-md: 0 1px 2px rgba(0, 0, 0, .35), 0 6px 18px rgba(0, 0, 0, .25);
+    }
+}
