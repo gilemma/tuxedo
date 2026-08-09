@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { CaseForm } from './CaseForm';
-import { useCase, useUpdateCase } from '../model/cases';
+import { useCase, useUpdateCase } from '../../../shared/model/cases';
 import type { CaseInsert } from '../../../supabase/types';
 
 export function EditCase() {

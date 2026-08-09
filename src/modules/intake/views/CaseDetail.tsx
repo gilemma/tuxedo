@@ -3,7 +3,7 @@ import { Button } from '../../../shared/ui/Button';
 import { Pill } from '../../../shared/ui/Pill';
 import { fmtDate } from '../../../shared/fmt/date';
 import type { CaseWithRefs, CodeEntry } from '../../../supabase/types';
-import { useCase } from '../model/cases';
+import { useCase } from '../../../shared/model/cases';
 
 export function CaseDetail() {
   const { id } = useParams<{ id: string }>();

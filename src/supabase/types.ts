@@ -67,9 +67,43 @@ export type CaseInsert = {
   procedures_pre?: CodeEntry[];
 };
 
-export type CaseUpdate = Partial<CaseInsert>;
+export type CaseUpdate = Partial<
+  Omit<Case, 'id' | 'created_at' | 'updated_at' | 'impact_delta'>
+>;
 
 export type CaseWithRefs = Case & {
   coder: { name: string } | null;
   fund: { name: string } | null;
+};
+
+// Vocabularies pinned by 0003_VOCAB.sql. Keep in sync with the check
+// constraints on cases.status and cases.drg_change_reason.
+export const CASE_STATUSES = ['in_review', 'closed'] as const;
+export type CaseStatus = (typeof CASE_STATUSES)[number];
+
+export const DRG_CHANGE_REASONS = [
+  'adrg_change',
+  'split_change',
+  'px_change_no_drg_shift',
+  'dx_change_only_no_drg_shift',
+  'no_change',
+] as const;
+export type DrgChangeReason = (typeof DRG_CHANGE_REASONS)[number];
+
+export type CodeChange = {
+  id: string;
+  case_id: string;
+  kind: 'dx' | 'px';
+  action: 'added' | 'removed';
+  code: string;
+  note: string | null;
+  created_at: string;
+};
+
+export type CodeChangeInsert = {
+  case_id: string;
+  kind: 'dx' | 'px';
+  action: 'added' | 'removed';
+  code: string;
+  note?: string | null;
 };

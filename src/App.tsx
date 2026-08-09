@@ -6,6 +6,7 @@ import { Button } from './shared/ui/Button';
 import { CodersEditor } from './modules/admin';
 import { NewCase, EditCase, CaseDetail } from './modules/intake';
 import { CaseLedger, Dashboard } from './modules/ledger';
+import { ReviewWorkspace } from './modules/review';
 
 export default function App() {
   const { session, loading } = useAuth();
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/cases/new" element={<NewCase />} />
           <Route path="/cases/:id" element={<CaseDetail />} />
           <Route path="/cases/:id/edit" element={<EditCase />} />
+          <Route path="/cases/:id/review" element={<ReviewWorkspace />} />
           <Route path="/admin/coders" element={<CodersEditor />} />
         </Routes>
       </Shell>
