@@ -1,6 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '../../../shared/ui/Button';
+import { DrgEntry } from './DrgEntry';
 import { DxPxEditor } from './DxPxEditor';
+import { ImpactForm } from './ImpactForm';
 
 export function ReviewWorkspace() {
   const { id } = useParams<{ id: string }>();
@@ -36,29 +38,17 @@ export function ReviewWorkspace() {
 
       <div style={{ padding: '12px 16px' }}>
         <DxPxEditor caseId={id} />
-
-        <div style={{ height: 12 }} />
-        <Placeholder title="Post-audit DRG" hint="Scene 05 — DRG entry + reason dropdown" />
-        <Placeholder title="Financial impact" hint="Scene 06 — reimbursement pre/post + note" />
+        <Divider />
+        <DrgEntry caseId={id} />
+        <Divider />
+        <ImpactForm caseId={id} />
       </div>
     </section>
   );
 }
 
-function Placeholder({ title, hint }: { title: string; hint: string }) {
-  return (
-    <div
-      style={{
-        border: '1px dashed var(--rule)',
-        borderRadius: 3,
-        padding: '12px 14px',
-        margin: '10px 0',
-      }}
-    >
-      <div style={{ color: 'var(--ink)', fontFamily: 'var(--font-display)' }}>{title}</div>
-      <div style={{ color: 'var(--ink-3)', fontSize: '0.85rem', marginTop: 4 }}>{hint}</div>
-    </div>
-  );
+function Divider() {
+  return <div style={{ height: 1, background: 'var(--rule)', margin: '18px 0' }} />;
 }
 
 function Msg({ children }: { children: React.ReactNode }) {

@@ -42,14 +42,14 @@ export type Case = {
   drg_version: string;
   drg_pre: string;
   drg_post: string | null;
-  drg_change_reason: string | null;
+  drg_change_reason: DrgChangeReason | null;
   diagnoses_pre: CodeEntry[];
   procedures_pre: CodeEntry[];
   reimbursement_pre: number | null;
   reimbursement_post: number | null;
   impact_delta: number | null;
   impact_note: string | null;
-  status: string;
+  status: CaseStatus;
   created_at: string;
   updated_at: string;
 };
