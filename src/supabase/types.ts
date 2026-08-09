@@ -109,3 +109,20 @@ export type CodeChangeInsert = {
   code: string;
   note?: string | null;
 };
+
+export type Template = {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TemplateInsert = {
+  name: string;
+  subject?: string;
+  body?: string;
+};
+
+export type TemplateUpdate = Partial<TemplateInsert>;

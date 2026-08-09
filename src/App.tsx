@@ -3,7 +3,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { supabase } from './supabase/client';
 import { useAuth } from './shared/hooks/useAuth';
 import { Button } from './shared/ui/Button';
-import { CodersEditor } from './modules/admin';
+import { AdminHome, CodersEditor, TemplatesEditor } from './modules/admin';
 import { NewCase, EditCase, CaseDetail } from './modules/intake';
 import { CaseLedger, Dashboard } from './modules/ledger';
 import { ReviewWorkspace } from './modules/review';
@@ -24,7 +24,9 @@ export default function App() {
           <Route path="/cases/:id" element={<CaseDetail />} />
           <Route path="/cases/:id/edit" element={<EditCase />} />
           <Route path="/cases/:id/review" element={<ReviewWorkspace />} />
+          <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/coders" element={<CodersEditor />} />
+          <Route path="/admin/templates" element={<TemplatesEditor />} />
         </Routes>
       </Shell>
     </BrowserRouter>
@@ -55,8 +57,8 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link to="/cases/new" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
             New case
           </Link>
-          <Link to="/admin/coders" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Coders
+          <Link to="/admin" style={{ color: 'var(--ink-2)', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Admin
           </Link>
         </nav>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
