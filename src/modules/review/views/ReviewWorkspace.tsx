@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '../../../shared/ui/Button';
+import { CloseCaseAction } from './CloseCaseAction';
 import { DrgEntry } from './DrgEntry';
 import { DxPxEditor } from './DxPxEditor';
 import { ImpactForm } from './ImpactForm';
@@ -42,6 +43,8 @@ export function ReviewWorkspace() {
         <DrgEntry caseId={id} />
         <Divider />
         <ImpactForm caseId={id} />
+        <Divider />
+        <CloseCaseAction caseId={id} />
       </div>
     </section>
   );

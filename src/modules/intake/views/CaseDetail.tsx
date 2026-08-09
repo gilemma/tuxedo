@@ -1,9 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../shared/ui/Button';
 import { Pill } from '../../../shared/ui/Pill';
 import { fmtDate } from '../../../shared/fmt/date';
 import type { CaseWithRefs, CodeEntry } from '../../../supabase/types';
-import { useCase } from '../../../shared/model/cases';
+import { useCase, useUpdateCase } from '../../../shared/model/cases';
+import { useCodeChanges } from '../../review';
 
 export function CaseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +19,25 @@ export function CaseDetail() {
 }
 
 function View({ c, id }: { c: CaseWithRefs; id: string }) {
+  const navigate = useNavigate();
+  const update = useUpdateCase();
+  const changesQ = useCodeChanges(id);
+
+  const isClosed = c.status === 'closed';
+  const hasChanges = (changesQ.data?.length ?? 0) > 0;
+  const reviewLabel = isClosed
+    ? 'Reopen'
+    : hasChanges
+    ? 'Continue review'
+    : 'Review this case';
+
+  const onReview = async () => {
+    if (isClosed) {
+      await update.mutateAsync({ id, patch: { status: 'in_review' } });
+    }
+    navigate(`/cases/${id}/review`);
+  };
+
   return (
     <section
       style={{
@@ -64,13 +84,22 @@ function View({ c, id }: { c: CaseWithRefs; id: string }) {
             justifyContent: 'flex-end',
             gap: 8,
             marginTop: 16,
+            alignItems: 'center',
           }}
         >
+          {update.error && (
+            <span style={{ color: 'var(--audit-red)', fontSize: '0.85rem' }}>
+              {update.error.message}
+            </span>
+          )}
           <Link to={`/cases/${id}/edit`} style={{ textDecoration: 'none' }}>
             <Button variant="ghost" type="button">
               Edit intake
             </Button>
           </Link>
+          <Button type="button" onClick={onReview} disabled={update.isPending}>
+            {update.isPending ? 'Reopening…' : reviewLabel}
+          </Button>
         </div>
       </div>
     </section>
