@@ -90,11 +90,13 @@ export const DRG_CHANGE_REASONS = [
 ] as const;
 export type DrgChangeReason = (typeof DRG_CHANGE_REASONS)[number];
 
+export type CodeChangeAction = 'added' | 'removed' | 'made_principal';
+
 export type CodeChange = {
   id: string;
   case_id: string;
   kind: 'dx' | 'px';
-  action: 'added' | 'removed';
+  action: CodeChangeAction;
   code: string;
   note: string | null;
   created_at: string;
@@ -103,7 +105,7 @@ export type CodeChange = {
 export type CodeChangeInsert = {
   case_id: string;
   kind: 'dx' | 'px';
-  action: 'added' | 'removed';
+  action: CodeChangeAction;
   code: string;
   note?: string | null;
 };
